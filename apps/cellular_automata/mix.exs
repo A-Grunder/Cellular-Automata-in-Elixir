@@ -22,7 +22,7 @@ defmodule CellularAutomata.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {CellularAutomata.Application, []},
+      mod: {Grid.Supervisor, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end
@@ -35,12 +35,7 @@ defmodule CellularAutomata.MixProject do
   #
   # Type `mix help deps` for examples and options.
   defp deps do
-    [
-      {:dns_cluster, "~> 0.1.1"},
-      {:phoenix_pubsub, "~> 2.1"},
-      {:swoosh, "~> 1.5"},
-      {:finch, "~> 0.13"}
-    ]
+    []
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
