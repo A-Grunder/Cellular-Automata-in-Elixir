@@ -22,7 +22,7 @@ defmodule CellularAutomata.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {Grid.Supervisor, []},
+      mod: {World.Supervisor, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end

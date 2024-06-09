@@ -1,4 +1,4 @@
-defmodule Grid.Supervisor do
+defmodule World.Supervisor do
   use Supervisor
 
   def start(_type, _args) do
