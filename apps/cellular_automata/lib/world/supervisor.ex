@@ -25,7 +25,7 @@ defmodule World.Supervisor do
         type: :supervisor
       },
       %{
-        id: Registry,
+        id: CellRegistry,
         start: {Registry, :start_link, [Registry, keys: :unique, name: Cell.Registry]},
         restart: :transient,
         type: :supervisor
