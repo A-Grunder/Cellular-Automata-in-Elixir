@@ -1,3 +1,0 @@
-# CellularAutomata
-
-**TODO: Add description**
