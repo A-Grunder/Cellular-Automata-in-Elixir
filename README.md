@@ -16,4 +16,3 @@ mix deps.get
 mix compile
 mix scenic.run
 ```
-
