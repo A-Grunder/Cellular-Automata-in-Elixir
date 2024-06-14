@@ -42,7 +42,7 @@ defmodule CellularAutomata.Cell do
 
   @impl true
   def init({position, init_cell_state}) do
-    Registry.register(CellularAutomata.Cell.Registry, position, init_cell_state)
+    Registry.update_value(CellularAutomata.Cell.Registry, position, init_cell_state)
     {:ok, %{position: position, state: init_cell_state, next_state: init_cell_state}}
   end
 

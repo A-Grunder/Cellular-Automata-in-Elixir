@@ -9,7 +9,8 @@ defmodule CellularAutomata.World.Supervisor do
   def init(_) do
     children = [
       {CellularAutomata.World, []},
-      {CellularAutomata.Cell.Supervisor, []}
+      {CellularAutomata.Cell.Supervisor, []},
+      {Registry, keys: :unique, name: CellularAutomata.Cell.Registry}
     ]
 
     Supervisor.init(children, strategy: :one_for_one)
