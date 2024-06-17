@@ -1,12 +1,11 @@
 defmodule CellularAutomata.World do
   use GenServer
-  require Logger
 
   alias CellularAutomata.Cell
   alias CellularAutomata.Pattern
 
-  @min -500
-  @max 500
+  @min -100
+  @max 100
 
   def start_link(_) do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
@@ -25,7 +24,7 @@ defmodule CellularAutomata.World do
   end
 
   def start_state do
-    GenServer.cast(__MODULE__, :start_state)
+    GenServer.call(__MODULE__, :start_state)
   end
 
   def set_state(position, state) do
@@ -77,13 +76,14 @@ defmodule CellularAutomata.World do
     {:reply, response, state}
   end
 
-  def handle_cast(:start_state, state) do
+  def handle_call(:start_state, _from, state) do
     # Initialize the grid with cells
     for x <- @min..@max, y <- @min..@max do
       # Create a new cell at the given position, if its a glider gun cell, set it to 1
-      if Pattern.is_glider_gun?(x, y, 50, 50), do: Cell.new_cell({{x, y}, 1}), else: Cell.new_cell({{x, y}, 0})
+      if Pattern.is_glider_gun?(x, y, 30, 30), do: Cell.new_cell({{x, y}, 1}), else: Cell.new_cell({{x, y}, 0})
     end
-    {:noreply, state}
+
+    {:reply, :ok, state}
   end
 
 end

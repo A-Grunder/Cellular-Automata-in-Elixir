@@ -8,9 +8,9 @@ defmodule CellularAutomata.Scene.Home do
   alias Scenic.Graph
   alias CellularAutomata.World
 
-  @cell_size 1
-  @min -250
-  @max 250
+  @cell_size 4
+  @min -50
+  @max 50
   @x_offset 60
   @y_offset 60
   @colors [:white, :black, :red, :green, :blue, :yellow, :cyan, :magenta]
@@ -19,16 +19,9 @@ defmodule CellularAutomata.Scene.Home do
     World.start_link(nil)
     World.start_state()
 
-    graph =
-      Graph.build()
-      |> rect({@max - @min, @max - @min}, stroke: {1, :white}, translate: {@x_offset, @y_offset})
-      |> draw_grid(World.get_grid())
-      |> button("Tick", id: :tick_button, translate: {10, 10})
+    graph = draw_graph(World.get_grid())
 
-
-    scene =
-      scene
-      |> push_graph(graph)
+    scene = push_graph(scene, graph)
     {:ok, scene}
   end
 
@@ -37,13 +30,17 @@ defmodule CellularAutomata.Scene.Home do
     {:noreply, scene}
   end
 
+  defp draw_graph(grid) do
+    Graph.build()
+    |> rect({(@max - @min) * @cell_size + @cell_size, (@max - @min ) * @cell_size+ @cell_size}, stroke: {2, :gray}, translate: {@x_offset, @y_offset})
+    |> draw_grid(grid)
+    |> button("Tick", id: :tick_button, translate: {10, 10})
+
+  end
+
   defp tick(scene) do
     grid = World.tick()
-    graph =
-      Graph.build()
-      |> rect({@max - @min, @max - @min}, stroke: {1, :white}, translate: {@x_offset, @y_offset})
-      |> draw_grid(grid)
-      |> button("Tick", id: :tick_button, translate: {10, 10})
+    graph = draw_graph(grid)
 
     #Logger.info(grid)
 
@@ -53,10 +50,17 @@ defmodule CellularAutomata.Scene.Home do
 
   defp draw_grid(graph, grid) do
     Enum.reduce(grid, graph, fn {{x, y}, state}, graph ->
-      if x > @min and x < @max and y > @min and y < @max do
+      if x >= @min and x <= @max and y >= @min and y <= @max do
         color = Enum.at(@colors, state, :white)
         graph
-        |> rect({@cell_size, @cell_size}, fill: color, translate: {x - @min + @x_offset, y - @min + @y_offset})
+        |> rect(
+          {@cell_size, @cell_size},
+          fill: color,
+          translate: {
+            ((x - @min) * @cell_size + @x_offset),
+            ((y - @min) * @cell_size + @y_offset)
+            }
+          )
       else
         graph
       end

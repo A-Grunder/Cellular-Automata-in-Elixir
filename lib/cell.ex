@@ -15,8 +15,6 @@ defmodule CellularAutomata.Cell do
 
   use GenServer
 
-  require Logger
-
   @default_state 0
 
   # Number of states the cell can have (for example, 2 in the Game of Life)
@@ -42,7 +40,7 @@ defmodule CellularAutomata.Cell do
 
   @impl true
   def init({position, init_cell_state}) do
-    Registry.update_value(CellularAutomata.Cell.Registry, position, init_cell_state)
+    Registry.update_value(CellularAutomata.Cell.Registry, position, fn _ -> init_cell_state end)
     {:ok, %{position: position, state: init_cell_state, next_state: init_cell_state}}
   end
 
@@ -114,8 +112,9 @@ defmodule CellularAutomata.Cell do
 
   defp get_neighbours_positions(position, neighbourhood) do
     Enum.map(neighbourhood, fn neighbour ->
-      Enum.zip(position, neighbour)
-      |> Enum.map(fn {coord, offset} -> coord + offset end)
+      {x, y} = position
+      {dx, dy} = neighbour
+      {x + dx, y + dy}
     end)
   end
 
@@ -158,14 +157,14 @@ defmodule CellularAutomata.Cell do
   @impl true
   def handle_call(:update_state, _from, cell_state) do
     new_cell_state = %{cell_state | state: cell_state.next_state}
-    Registry.update_value(Cell.Registry, cell_state.position, new_cell_state.state)
+    Registry.update_value(CellularAutomata.Cell.Registry, cell_state.position, fn _ -> cell_state.next_state end)
     {:reply, :ok, new_cell_state}
   end
 
   @impl true
   def handle_call({:set_state, state}, _from, cell_state) do
     new_cell_state = %{cell_state | state: state}
-    Registry.update_value(Cell.Registry, cell_state.position, new_cell_state.state)
+    Registry.update_value(CellularAutomata.Cell.Registry, cell_state.position, fn _ -> state end)
     {:reply, :ok, new_cell_state}
   end
 
