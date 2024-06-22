@@ -42,8 +42,6 @@ defmodule CellularAutomata.Scene.Home do
     grid = World.tick()
     graph = draw_graph(grid)
 
-    #Logger.info(grid)
-
     scene
     |> push_graph(graph)
   end

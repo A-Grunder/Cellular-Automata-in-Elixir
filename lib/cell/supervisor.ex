@@ -1,6 +1,5 @@
 defmodule CellularAutomata.Cell.Supervisor do
   use DynamicSupervisor
-  require Logger
 
   def start_link(_) do
     DynamicSupervisor.start_link(__MODULE__, [], name: __MODULE__)
