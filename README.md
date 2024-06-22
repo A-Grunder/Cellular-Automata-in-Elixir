@@ -1,9 +1,6 @@
 # Cellular Automata in Elixir
 
-> [!CAUTION]
-> This does not work as of yet. If you have any ideas, please let me know.
-
-This is a simple implementation of cellular automata in Elixir. It has the rules of the Game of Life pre-programmed in, but this is designed to be easily changed. 
+This is a simple implementation of cellular automata in Elixir. It has the rules of the Game of Life pre-programmed in, but this is designed to be easily changed.
 
 ## Installation
 
